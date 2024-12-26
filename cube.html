@@ -13,7 +13,6 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
-      cursor: none;
     }
 
     .scene {
@@ -27,7 +26,7 @@
       height: 100%;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 0.1s ease-out;
+      animation: rotate 5s infinite linear;
     }
 
     .cube div {
@@ -45,15 +44,13 @@
     .top    { transform: rotateX(90deg) translateZ(100px); }
     .bottom { transform: rotateX(-90deg) translateZ(100px); }
 
-    .mouse-dot {
-      width: 10px;
-      height: 10px;
-      background-color: #ff6347;
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: transform 0.05s ease-out;
+    @keyframes rotate {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg);
+      }
+      100% {
+        transform: rotateX(360deg) rotateY(360deg);
+      }
     }
   </style>
 </head>
@@ -68,40 +65,5 @@
       <div class="bottom"></div>
     </div>
   </div>
-  <div class="mouse-dot"></div>
-  
-  <script>
-    // Получаем элементы куба и указателя мыши
-    const cube = document.querySelector('.cube');
-    const mouseDot = document.querySelector('.mouse-dot');
-    const scene = document.querySelector('.scene');
-
-    // Центр сцены
-    const sceneRect = scene.getBoundingClientRect();
-    const centerX = sceneRect.left + sceneRect.width / 2;
-    const centerY = sceneRect.top + sceneRect.height / 2;
-
-    // Обновляем позицию куба при движении мыши
-    document.addEventListener('mousemove', (event) => {
-      // Получаем координаты мыши
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-
-      // Рассчитываем угол поворота
-      const rotateX = -(mouseY - centerY) / 20; // Чем ближе к центру, тем меньше вращение
-      const rotateY = (mouseX - centerX) / 20;
-
-      // Применяем трансформацию куба
-      cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
-      // Перемещаем индикатор мыши
-      mouseDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-    });
-
-    // Добавляем плавное возвращение куба при уходе мыши
-    document.addEventListener('mouseleave', () => {
-      cube.style.transform = 'rotateX(0deg) rotateY(0deg)';
-    });
-  </script>
 </body>
 </html>
